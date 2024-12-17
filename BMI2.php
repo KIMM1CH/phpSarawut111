@@ -68,10 +68,8 @@
             $weight = $_POST['h'];
             $height = $_POST['w'];
 
-            $heightInMeters = $height / 100;
-            $bmi = $weight / ($heightInMeters ** 2);
 
-            // Determine BMI category
+            
             if ($bmi < 18.5) {
                 $bmiCategory = "น้ำหนักน้อย";
                 $recommendation = "ควรเพิ่มน้ำหนักด้วยการรับประทานอาหารที่มีประโยชน์และออกกำลังกายอย่างเหมาะสม";
@@ -86,15 +84,15 @@
                 $recommendation = "ควรปรึกษาแพทย์เพื่อวางแผนการลดน้ำหนักอย่างเหมาะสม";
             }
 
-            // Display results
+        
             echo "<h1>ผลการคำนวณ BMI</h1>";
             echo "<div class='result'>";
             echo "<p><strong>ชื่อ-นามสกุล:</strong> $firstName $lastName</p>";
             echo "<p><strong>อายุ:</strong> $age ปี</p>";
             echo "<p><strong>น้ำหนัก:</strong> $weight กิโลกรัม</p>";
             echo "<p><strong>ส่วนสูง:</strong> $height เซนติเมตร</p>";
-            echo "<p><strong>BMI:</strong> " . number_format($bmi, 2) . " ($bmiCategory)</p>";
-            echo "<p><strong>คำแนะนำ:</strong> $recommendation</p>";
+            $bmi = bmi($height,$weight );
+            interpret($bmi);
             echo "</div>";
         } else {
             echo "<p>กรุณากรอกข้อมูลจากหน้าหลักก่อน</p>";
@@ -103,5 +101,29 @@
 
         <a href="BMI.php" class="btn">กลับหน้ากรอกข้อมูล</a>
     </div>
+    <?php
+    function bmi($height,$weight){
+    if ($heightInMeters = $height / 100){
+    $bmi = $weight / ($heightInMeters ** 2);
+    return $bmi;
+    }}
+    function interpret($bmi){
+        if ($bmi < 18.5) {
+            $bmiCategory = "น้ำหนักน้อย";
+            $recommendation = "ควรเพิ่มน้ำหนักด้วยการรับประทานอาหารที่มีประโยชน์และออกกำลังกายอย่างเหมาะสม";
+        } elseif ($bmi < 25) {
+            $bmiCategory = "น้ำหนักปกติ";
+            $recommendation = "รักษาสุขภาพและออกกำลังกายอย่างสม่ำเสมอเพื่อรักษาน้ำหนักที่เหมาะสม";
+        } elseif ($bmi < 30) {
+            $bmiCategory = "น้ำหนักเกิน";
+            $recommendation = "ควรออกกำลังกายและควบคุมการบริโภคอาหารเพื่อลดน้ำหนัก";
+        } else {
+            $bmiCategory = "โรคอ้วน";
+            $recommendation = "ควรปรึกษาแพทย์เพื่อวางแผนการลดน้ำหนักอย่างเหมาะสม";
+        }
+        echo "<p><strong>BMI:</strong> " . number_format($bmi, 2) . " ($bmiCategory)</p>";
+            echo "<p><strong>คำแนะนำ:</strong> $recommendation</p>";
+    }
+    ?>
 </body>
 </html>
